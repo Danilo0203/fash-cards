@@ -40,7 +40,8 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "gradient-dark": "linear-gradient(180deg, rgba(0,34,102,1) 0%, rgba(12,17,29,1) 100%)",
+        "gradient-dark":
+          "linear-gradient(180deg, rgba(0,34,102,1) 0%, rgba(12,17,29,1) 100%)",
         "gradient-light": "linear-gradient(#D1E0FF, #F9FAFB)",
         "contenedor-dark": "#0C111D",
       },
@@ -114,7 +115,7 @@ const config = {
               800: "#FDD5F9",
               900: "#FEECFE",
               DEFAULT: "#FFFFFF",
-              foreground: "#000",
+              foreground: "#002266",
             },
             focus: "#F182F6",
           },
