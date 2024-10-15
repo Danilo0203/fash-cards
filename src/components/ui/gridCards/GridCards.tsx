@@ -4,7 +4,7 @@ const projects = [
     title: "Stripe",
     description:
       "A technology company that builds economic infrastructure for the internet.",
-    link: "/mis_mazos/HolaMundo/tarjeta1",
+    link: "/admin/mis_mazos/HolaMundo/tarjeta1",
     footer: "50 flashcards",
     favorito: false,
   },
@@ -12,7 +12,7 @@ const projects = [
     title: "Netflix",
     description:
       "A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.",
-    link: "/mis_mazos/HolaMundo",
+    link: "/admin/mis_mazos/HolaMundo",
     footer: "50 flashcards",
     favorito: true,
   },

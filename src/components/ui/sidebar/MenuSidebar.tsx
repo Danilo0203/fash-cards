@@ -15,6 +15,8 @@ import { SidebarLink } from "./SidebarLink";
 import { Sidebar } from "./Sidebar";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { LogoFlashCard } from "../logo/LogoFlashCard";
+import { IconSignout } from "@/components/icons/IconSignout";
+import { IconSigin } from "@/components/icons/IconSigin";
 
 export function MenuSidebar({
   children,
@@ -22,14 +24,14 @@ export function MenuSidebar({
   const links = [
     {
       label: "Inicio",
-      href: "/",
+      href: "/admin",
       icon: (
         <IconHomeFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
     },
     {
       label: "Favoritos",
-      href: "/favoritos",
+      href: "/admin/favoritos",
       icon: (
         <IconHeartFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
@@ -43,7 +45,7 @@ export function MenuSidebar({
     },
     {
       label: "Perfil",
-      href: "/perfil",
+      href: "/admin/perfil",
       icon: (
         <IconUserFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
@@ -68,9 +70,18 @@ export function MenuSidebar({
               <SidebarLink
                 link={{
                   label: "Cerrar sesión",
-                  href: "/admin/logout",
+                  href: "#",
                   icon: (
-                    <IconLogout className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
+                    <IconSignout className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
+                  ),
+                }}
+              />
+              <SidebarLink
+                link={{
+                  label: "Iniciar sesión",
+                  href: "/auth/login",
+                  icon: (
+                    <IconSigin className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
                   ),
                 }}
               />

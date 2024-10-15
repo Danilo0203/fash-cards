@@ -1,7 +1,5 @@
+import { Login } from "@/components/ui/form/Login";
+
 export default function LoginPage() {
-  return (
-    <div>
-      <h1>Hello Page</h1>
-    </div>
-  );
+  return <Login />;
 }
