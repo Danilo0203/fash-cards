@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   ModalFooter,
+  Textarea,
 } from "@nextui-org/react";
 
 import { CategoriasMazos } from "../categoriasMazos/CategoriasMazos";
@@ -31,11 +32,17 @@ export const ModalAgregarMazos = () => {
               <Input
                 autoFocus
                 label="Nombre del mazo"
-                placeholder="Escribe el nombre de tu mazo"
                 variant="bordered"
                 labelPlacement="outside"
               />
               <CategoriasMazos />
+              <Textarea
+                label="Descripción"
+                placeholder="Escribe una descripción para tu mazo"
+                variant="bordered"
+                labelPlacement="outside"
+                rows={3}
+              />
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="ghost" onPress={onClose}>

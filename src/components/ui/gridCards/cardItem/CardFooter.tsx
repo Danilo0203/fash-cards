@@ -44,7 +44,7 @@ export const CardFooter = ({
               color="danger"
               onClick={(e) => handleButton(e)}
             >
-              <IconDelete className="h-4 w-4 text-textElementDark/85" />
+              <IconDelete className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
             </Button>
             <Button
               isIconOnly
@@ -52,7 +52,7 @@ export const CardFooter = ({
               color="warning"
               onClick={(e) => handleButton(e)}
             >
-              <IconEdit className="h-4 w-4 text-textElementDark/85" />
+              <IconEdit className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
             </Button>
           </>
         )}

@@ -24,28 +24,28 @@ export function MenuSidebar({
       label: "Inicio",
       href: "/",
       icon: (
-        <IconHomeFilled className="size-8 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconHomeFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
     },
     {
       label: "Favoritos",
       href: "/favoritos",
       icon: (
-        <IconHeartFilled className="size-8 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconHeartFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
     },
     {
       label: "Explorar",
       href: "/explorar",
       icon: (
-        <IconCompassFilled className="size-8 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconCompassFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
     },
     {
       label: "Perfil",
       href: "/perfil",
       icon: (
-        <IconUserFilled className="size-8 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+        <IconUserFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
       ),
     },
   ];
@@ -70,7 +70,7 @@ export function MenuSidebar({
                   label: "Cerrar sesión",
                   href: "/admin/logout",
                   icon: (
-                    <IconLogout className="size-8 flex-shrink-0 text-neutral-700 dark:text-neutral-200" />
+                    <IconLogout className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
                   ),
                 }}
               />
@@ -91,11 +91,11 @@ export const Logo = () => {
       href="/"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
-      <LogoFlashCard className="stroke-neutral-700 dark:stroke-neutral-200" />
+      <LogoFlashCard className="stroke-primary-foreground dark:stroke-neutral-200" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="whitespace-pre font-medium text-black dark:text-white"
+        className="whitespace-pre font-medium text-primary-foreground dark:text-white"
       >
         Flash Cards
       </motion.span>
@@ -108,7 +108,7 @@ export const LogoIcon = () => {
       href="/"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
-      <LogoFlashCard className="stroke-neutral-700 dark:stroke-neutral-200" />
+      <LogoFlashCard className="stroke-primary-foreground dark:stroke-neutral-200" />
     </Link>
   );
 };
