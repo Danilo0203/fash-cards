@@ -1,15 +1,38 @@
+"use client";
+import { getTipoMazos } from "@/actions/mazos/categorias/categoriasMazos";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-export const CategoriasMazos = () => {
+// import { useEffect, useState } from "react";
+export const CategoriasMazos = async () => {
+  const categoriasMazos = await getTipoMazos();
+
+  // const [categoriasMazos, setCategoriasMazos] = useState([]);
+
+  // const getCategoriasMazos = async () => {
+  //   try {
+  //     const response = await fetch("/api/tipoMazos"); // Llama a la API interna
+  //     const { items } = await response.json();
+  //     setCategoriasMazos(items);
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getCategoriasMazos();
+  // }, []);
+
+  // console.log(categoriasMazos);
+
   return (
     <Autocomplete
-      defaultItems={animals}
-      label="Favorite Animal"
-      placeholder="Search an animal"
+      defaultItems={categoriasMazos}
+      label="Categorías de mazos"
       className="w-full"
       variant="bordered"
     >
-      {(animal) => (
-        <AutocompleteItem key={animal.value}>{animal.label}</AutocompleteItem>
+      {(items) => (
+        <AutocompleteItem key={items.value}>{items.label}</AutocompleteItem>
       )}
     </Autocomplete>
   );

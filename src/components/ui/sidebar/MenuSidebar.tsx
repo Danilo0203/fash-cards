@@ -4,7 +4,6 @@ import {
   IconCompassFilled,
   IconHeartFilled,
   IconHomeFilled,
-  IconLogout,
   IconUserFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { LogoFlashCard } from "../logo/LogoFlashCard";
 import { IconSignout } from "@/components/icons/IconSignout";
 import { IconSigin } from "@/components/icons/IconSigin";
+import { signOut, useSession } from "next-auth/react";
 
 export function MenuSidebar({
   children,
@@ -52,6 +52,8 @@ export function MenuSidebar({
     },
   ];
   const [open, setOpen] = useState(false);
+  const { status } = useSession();
+
   return (
     <div
       className={cn(
@@ -67,24 +69,29 @@ export function MenuSidebar({
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
-              <SidebarLink
-                link={{
-                  label: "Cerrar sesión",
-                  href: "#",
-                  icon: (
-                    <IconSignout className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
-                  ),
-                }}
-              />
-              <SidebarLink
-                link={{
-                  label: "Iniciar sesión",
-                  href: "/auth/login",
-                  icon: (
-                    <IconSigin className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
-                  ),
-                }}
-              />
+              {status === "authenticated" ? (
+                <button onClick={() => signOut({ redirectTo: "/explorar" })}>
+                  <SidebarLink
+                    link={{
+                      label: "Cerrar sesión",
+                      href: "#",
+                      icon: (
+                        <IconSignout className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
+                      ),
+                    }}
+                  />
+                </button>
+              ) : (
+                <SidebarLink
+                  link={{
+                    label: "Iniciar sesión",
+                    href: "/auth/login",
+                    icon: (
+                      <IconSigin className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
+                    ),
+                  }}
+                />
+              )}
             </div>
           </div>
           <div>

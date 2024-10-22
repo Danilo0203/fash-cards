@@ -1,46 +1,82 @@
-import NextAuth, { type NextAuthConfig } from "next-auth";
+import prisma from "@/lib/prisma";
 import credentials from "next-auth/providers/credentials";
+import { compare } from "bcryptjs";
 import { z } from "zod";
+import { NextAuthConfig } from "next-auth";
 
 export const authConfig = {
+  providers: [
+    credentials({
+      async authorize(credentials) {
+        // Validar las credenciales recibidas
+        const parsedCredentials = z
+          .object({
+            email: z.string().email(),
+            password: z.string().min(6),
+          })
+          .safeParse(credentials);
+
+        if (!parsedCredentials.success)
+          throw new Error("Credenciales inválidas");
+
+        const { email, password } = parsedCredentials.data;
+        try {
+          // Buscar el usuario en la base de datos
+          const user = await prisma.users.findUnique({
+            where: { email },
+          });
+
+          if (!user) {
+            throw new Error("Usuario no encontrado");
+          }
+
+          // Comparar la contraseña
+          const isPasswordValid = await compare(password, user.password);
+          if (!isPasswordValid) {
+            throw new Error("Contraseña incorrecta");
+          }
+
+          const role = await prisma.roles.findUnique({
+            where: { id: user.role_id },
+          });
+
+          // Si todo es correcto, retorna el objeto `user`
+          return {
+            id: user.id.toString(),
+            email: user.email,
+            nombres: user.nombres,
+            apellidos: user.apellidos,
+            role: role?.nombre,
+          };
+        } catch (error) {
+          console.error(error);
+          return null; // En caso de error, no autoriza
+        }
+      },
+    }),
+  ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.role = user.role;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      // Usa token en lugar de user
+      if (token) {
+        session.id = token.id;
+        session.email = token.email;
+        session.role = token.role;
+      }
+      return session;
+    },
+  },
+
   pages: {
     signIn: "/auth/login",
     newUser: "/auth/register",
   },
-  callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/explroar");
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL("/explroar", nextUrl));
-      }
-      return true;
-    },
-  },
-  providers: [
-    credentials({
-      async authorize(credentials) {
-        const parsedCredentials = z
-          .object({ email: z.string().email(), password: z.string().min(6) })
-          .safeParse(credentials);
-        if (!parsedCredentials.success) return null;
-        console.log(parsedCredentials.success);
-        const { email, password } = parsedCredentials.data;
-        console.log("authconfig.ts");
-        console.log(email, password);
-
-        // todo: Busca el correo
-
-        // todo: Compara la contraseña
-
-        // todo: Devuelve el usuario
-        return null;
-      },
-    }),
-  ],
 } satisfies NextAuthConfig;
-
-export const { signIn, signOut, auth } = NextAuth(authConfig);

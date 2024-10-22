@@ -49,6 +49,19 @@ const projects = [
     favorito: true,
   },
 ];
-export function GridCards() {
-  return <Grid items={projects} />;
+
+interface Project {
+  title: string;
+  description: string;
+  link: string;
+  footer: string;
+  favorito: boolean;
+}
+
+interface GridCardsProps {
+  data: Project[];
+}
+
+export function GridCards({ data }: Readonly<GridCardsProps>) {
+  return <Grid items={data} />;
 }

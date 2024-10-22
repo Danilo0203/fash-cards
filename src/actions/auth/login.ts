@@ -1,23 +1,20 @@
 "use server";
-import { AuthError } from "next-auth";
-import { signIn } from "../../../auth.config";
 
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
+import { AuthError } from "next-auth";
+import { signIn } from "../../../auth";
+export async function authenticate(formData: any) {
   try {
-    console.log({ DATA: Object.fromEntries(formData) });
-    await signIn("credentials", formData);
-    return [];
+    await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirect: false,
+      redirectTo: "/explorar",
+    });
+    return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
-      }
+      return { error: error.cause?.err?.message };
     }
+    return { error: "error 500" };
   }
 }

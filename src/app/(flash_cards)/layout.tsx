@@ -1,9 +1,12 @@
+import { getTipoMazos } from "@/actions/mazos/categorias/categoriasMazos";
 import { Header } from "@/components/ui/header/Header";
 import { MenuSidebar } from "@/components/ui/sidebar/MenuSidebar";
 
-export default function FlashCardsAppLayout({
+export default async function FlashCardsAppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const { items } = await getTipoMazos();
+
   return (
     <main className="min-h-dvh">
       <MenuSidebar>
