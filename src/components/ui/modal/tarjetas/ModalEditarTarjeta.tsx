@@ -1,81 +1,93 @@
-// ModalAgregarMazos.jsx
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+"use client";
+
+import IconEdit from "@/components/icons/IconEdit";
+import { useStoreMazos } from "@/store/useMazos.store";
+import { useStoreTarjetas } from "@/store/useTarjeta.store";
 import {
+  Button,
   Modal,
   ModalContent,
+  useDisclosure,
   ModalHeader,
   ModalBody,
   Input,
-  Button,
   ModalFooter,
   Textarea,
-  useDisclosure,
 } from "@nextui-org/react";
-import { CategoriasMazos } from "../categoriasMazos/CategoriasMazos";
-import { useStoreMazos } from "@/store/useMazos.store";
 
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { CategoriasMazos } from "../../categoriasMazos/CategoriasMazos";
 
-import { IconPlus } from "@tabler/icons-react";
+interface Props {
+  pregunta: string;
+  respuesta: string;
+}
 
-export const ModalAgregarMazos = () => {
-  const [selectedCategory, setSelectedCategory] = useState<{
-    currentKey: string;
-  } | null>(null);
-
+export const ModalEditarTarjeta = ({
+  id,
+  title,
+  description,
+}: {
+  id?: string;
+  title?: string;
+  description?: string;
+}) => {
   const {
-    isOpen: isMazoModalOpen,
-    onOpen: openMazoModal,
-    onClose: closeMazoModal,
+    isOpen: isTipoMazoModalOpen,
+    onOpen: openTipoMazoModal,
+    onClose: closeTipoMazoModal,
   } = useDisclosure({
-    id: "modal-mazo",
+    id: "modal-tipo-mazo",
   });
-
-  const { register, handleSubmit, reset } = useForm();
-  const crearMazo = useStoreMazos((state) => state.crear);
-
-  const onSubmit = async (data: any) => {
-    const payload = {
-      nombre: data.name,
-      descripcion: data.description,
-      tipo_mazo_id: selectedCategory ? selectedCategory.currentKey : null,
-    };
-    await crearMazo(payload);
-    toast.success("Mazo creado correctamente");
+  const { register, handleSubmit, reset } = useForm<Props>({
+    defaultValues: {
+      pregunta: title,
+      respuesta: description,
+    },
+  });
+  const crearTarjeta = useStoreTarjetas((state) => state.crearTarjeta);
+  const updateMazos = useStoreMazos((state) => state.obtenerMazos);
+  const onSubmit = async ({ pregunta, respuesta }: Props) => {
+    await crearTarjeta({
+      pregunta,
+      respuesta,
+      mazo_id: id,
+    });
+    toast.success("Tarjeta creada correctamente");
+    updateMazos();
     reset();
-    closeMazoModal();
+    closeTipoMazoModal();
   };
-
   return (
     <>
       <Button
-        startContent={<IconPlus />}
-        variant="bordered"
-        radius="full"
-        onPress={openMazoModal}
+        onPress={openTipoMazoModal}
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+        isIconOnly
+        variant="light"
+        color="success"
       >
-        Añadir Mazos
+        <IconEdit className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
       </Button>
       <Modal
-        isOpen={isMazoModalOpen}
-        onClose={closeMazoModal}
+        isOpen={isTipoMazoModalOpen}
+        onClose={closeTipoMazoModal}
         placement="top-center"
         className="bg-gradient-light dark:bg-gradient-dark"
         onClick={(e) => e.stopPropagation()}
-        id="modal-mazo"
-        isDismissable={false}
+        id="modal-tipo-mazo"
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Crear mazo de estudio
-              </ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Tarjeta</ModalHeader>
               <ModalBody>
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  id="AddMazo"
+                  id="AddTarjeta"
                   className="flex flex-col gap-4"
                 >
                   <Input
@@ -115,7 +127,7 @@ export const ModalAgregarMazos = () => {
                 <Button
                   color="secondary"
                   type="submit"
-                  form="AddMazo"
+                  form="AddTarjeta"
                   onClick={(e) => {
                     e.stopPropagation();
                   }}

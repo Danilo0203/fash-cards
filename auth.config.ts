@@ -1,8 +1,7 @@
-import prisma from "@/lib/prisma";
 import credentials from "next-auth/providers/credentials";
-import { compare } from "bcryptjs";
 import { z } from "zod";
 import { NextAuthConfig } from "next-auth";
+import { loginApi } from "@/helpers/api/auth";
 
 export const authConfig = {
   providers: [
@@ -21,35 +20,19 @@ export const authConfig = {
 
         const { email, password } = parsedCredentials.data;
         try {
-          // Buscar el usuario en la base de datos
-          const user = await prisma.users.findUnique({
-            where: { email },
-          });
+          const res = await loginApi({ email, password });
 
-          if (!user) {
-            throw new Error("Usuario no encontrado");
-          }
+          const { usuario, access_token } = res;
 
-          // Comparar la contraseña
-          const isPasswordValid = await compare(password, user.password);
-          if (!isPasswordValid) {
-            throw new Error("Contraseña incorrecta");
-          }
-
-          const role = await prisma.roles.findUnique({
-            where: { id: user.role_id },
-          });
-
-          // Si todo es correcto, retorna el objeto `user`
+          // Si todos es correcto, retorna el objeto `user`
           return {
-            id: user.id.toString(),
-            email: user.email,
-            nombres: user.nombres,
-            apellidos: user.apellidos,
-            role: role?.nombre,
+            id: usuario.id,
+            email: usuario.email,
+            name: usuario.nombres,
+            role: usuario.role.nombre,
+            token: access_token,
           };
         } catch (error) {
-          console.error(error);
           return null; // En caso de error, no autoriza
         }
       },
@@ -59,18 +42,17 @@ export const authConfig = {
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
-        token.role = user.role;
+        token.rol = user.role;
+        token.token = user.token;
       }
       return token;
     },
-    session({ session, token }) {
-      // Usa token en lugar de user
-      if (token) {
-        session.id = token.id;
-        session.email = token.email;
-        session.role = token.role;
-      }
+
+    session({ session, user, token }) {
+      session.user.id = token.id;
+      session.user.role = token.rol;
+      session.accessToken = token.token;
+
       return session;
     },
   },

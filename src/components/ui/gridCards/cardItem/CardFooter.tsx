@@ -1,24 +1,35 @@
-import IconDelete from "@/components/icons/IconDelete";
-import IconEdit from "@/components/icons/IconEdit";
+"use client";
 import { cn } from "@/lib/utils";
 import { Button } from "@nextui-org/button";
 import { IconHeart, IconHeartFilled } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
+import { ModalAgregarTarjeta } from "../../modal/tarjetas/ModalAgregarTarjeta";
+import { ModalEditarTarjeta } from "../../modal/tarjetas/ModalEditarTarjeta";
+import { ModalEliminarTarjeta } from "../../modal/tarjetas/ModalEliminarTarjeta";
+import { ModalEditarMazos } from "../../modal/ModalEditarMazos";
 
 export const CardFooter = ({
   className,
   children,
   favorito,
+  items,
 }: {
   className?: string;
   children: React.ReactNode;
   favorito?: boolean;
+  items?: {
+    id: string;
+    title: string;
+    description: string;
+  }[];
 }) => {
   const pathname = usePathname();
+
   const handleButton = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
   };
+
   return (
     <div
       className={cn(
@@ -38,22 +49,9 @@ export const CardFooter = ({
           </Button>
         ) : (
           <>
-            <Button
-              isIconOnly
-              variant="light"
-              color="danger"
-              onClick={(e) => handleButton(e)}
-            >
-              <IconDelete className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
-            </Button>
-            <Button
-              isIconOnly
-              variant="light"
-              color="warning"
-              onClick={(e) => handleButton(e)}
-            >
-              <IconEdit className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
-            </Button>
+            <ModalEliminarTarjeta id={items?.id} />
+            <ModalEditarMazos {...items} />
+            <ModalAgregarTarjeta id={items?.id} />
           </>
         )}
       </div>

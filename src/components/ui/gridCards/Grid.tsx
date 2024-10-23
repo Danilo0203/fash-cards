@@ -17,11 +17,12 @@ export const Grid = ({
     description: string;
     footer: string;
     link: string;
+    id: string;
   }[];
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
+  console.log(items);
   return (
     <div
       className={cn(
@@ -62,7 +63,7 @@ export const Grid = ({
               <CardTitle>{item.title}</CardTitle>
               <CardDescription>{item.description}</CardDescription>
             </div>
-            <CardFooter> {item.footer} </CardFooter>
+            <CardFooter items={item}> {item.footer} </CardFooter>
           </CardItem>
         </Link>
       ))}

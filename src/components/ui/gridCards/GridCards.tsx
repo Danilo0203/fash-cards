@@ -56,6 +56,7 @@ interface Project {
   link: string;
   footer: string;
   favorito: boolean;
+  id: string;
 }
 
 interface GridCardsProps {

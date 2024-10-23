@@ -1,5 +1,4 @@
 "use server";
-
 import { AuthError } from "next-auth";
 import { signIn } from "../../../auth";
 export async function authenticate(formData: any) {

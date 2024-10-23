@@ -1,11 +1,14 @@
-import { getMazos } from "@/actions/mazos/mazos";
+"use client";
 import { GridCards } from "@/components/ui/gridCards/GridCards";
-import { auth } from "../../../../auth";
+import { useStoreMazos } from "@/store/useMazos.store";
+import { useEffect } from "react";
 
-export default async function ExplorarPage() {
-  const { data } = await getMazos();
-  const session = await auth();
-  console.log(session);
-
-  return <GridCards data={data} />;
+export default function ExplorarPage() {
+  const obtenerMazos = useStoreMazos((state) => state.obtenerMazos);
+  const mazos = useStoreMazos((state) => state.mazos);
+  useEffect(() => {
+    obtenerMazos();
+  }, [obtenerMazos]);
+  console.log(mazos);
+  return <GridCards data={mazos} />;
 }

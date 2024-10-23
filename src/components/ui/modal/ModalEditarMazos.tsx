@@ -17,49 +17,62 @@ import { useStoreMazos } from "@/store/useMazos.store";
 
 import { toast } from "sonner";
 
-import { IconPlus } from "@tabler/icons-react";
+import IconEdit from "@/components/icons/IconEdit";
 
-export const ModalAgregarMazos = () => {
+export const ModalEditarMazos = ({
+  id,
+  title,
+  description,
+}: {
+  id?: string;
+  title?: string;
+  description?: string;
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<{
     currentKey: string;
   } | null>(null);
 
-  const {
-    isOpen: isMazoModalOpen,
-    onOpen: openMazoModal,
-    onClose: closeMazoModal,
-  } = useDisclosure({
+  const { isOpen, onOpen, onClose } = useDisclosure({
     id: "modal-mazo",
   });
 
-  const { register, handleSubmit, reset } = useForm();
-  const crearMazo = useStoreMazos((state) => state.crear);
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      name: title,
+      description: description,
+    },
+  });
+  const editarMazo = useStoreMazos((state) => state.editar);
 
   const onSubmit = async (data: any) => {
     const payload = {
       nombre: data.name,
       descripcion: data.description,
+      id,
       tipo_mazo_id: selectedCategory ? selectedCategory.currentKey : null,
     };
-    await crearMazo(payload);
+    await editarMazo(payload);
     toast.success("Mazo creado correctamente");
     reset();
-    closeMazoModal();
+    onClose();
   };
 
   return (
     <>
       <Button
-        startContent={<IconPlus />}
-        variant="bordered"
-        radius="full"
-        onPress={openMazoModal}
+        onPress={onOpen}
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+        isIconOnly
+        variant="light"
+        color="success"
       >
-        Añadir Mazos
+        <IconEdit className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
       </Button>
       <Modal
-        isOpen={isMazoModalOpen}
-        onClose={closeMazoModal}
+        isOpen={isOpen}
+        onClose={onClose}
         placement="top-center"
         className="bg-gradient-light dark:bg-gradient-dark"
         onClick={(e) => e.stopPropagation()}

@@ -1,17 +1,18 @@
 "use client";
-import { Button, Input } from "@nextui-org/react";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { Input } from "@nextui-org/react";
+import { IconSearch } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { Nav } from "../nav/Nav";
 import clsx from "clsx";
-import { useModalStore } from "@/store/useModal.store";
+
 import { ModalAgregarMazos } from "../modal/ModalAgregarMazos";
 import { CategoriasMazos } from "../categoriasMazos/CategoriasMazos";
+import { ModalAgregarTipoMazo } from "../modal/ModalAgregarTipoMazo";
 
 export const Header = () => {
   const pathName = usePathname();
-  const onOpen = useModalStore((state) => state.onOpen);
+
   if (pathName.includes("perfil")) {
     return (
       <header className="mt-24">
@@ -53,19 +54,14 @@ export const Header = () => {
             <h2 className="text-5xl font-extrabold">
               ¡Te damos la bienvenida!
             </h2>
-            <Button
-              startContent={<IconPlus />}
-              variant="bordered"
-              radius="full"
-              onPress={onOpen}
-            >
-              Añadir Mazos
-            </Button>
+            <div className="flex gap-3">
+              <ModalAgregarMazos />
+              <ModalAgregarTipoMazo />
+            </div>
           </>
         )}
       </header>
       <Nav />
-      <ModalAgregarMazos />
     </>
   );
 };
