@@ -2,6 +2,13 @@ import credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import { NextAuthConfig } from "next-auth";
 import { loginApi } from "@/helpers/api/auth";
+import { JWT } from "next-auth/jwt";
+import { Session } from "next-auth";
+declare module "next-auth" {
+  interface User {
+    role?: string;
+  }
+}
 
 export const authConfig = {
   providers: [
@@ -39,7 +46,7 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }: { token: JWT; user?: any }) {
       if (user) {
         token.id = user.id;
         token.rol = user.role;
@@ -48,10 +55,12 @@ export const authConfig = {
       return token;
     },
 
-    session({ session, user, token }) {
-      session.user.id = token.id;
-      session.user.role = token.rol;
-      session.accessToken = token.token;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (session.user) {
+        session.user.id = token.id as any;
+        session.user.role = token.rol as any;
+      }
+      session.accessToken = token.token as any;
 
       return session;
     },
