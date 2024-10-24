@@ -63,7 +63,7 @@ export const Grid = ({
               <CardTitle>{item.title}</CardTitle>
               <CardDescription>{item.description}</CardDescription>
             </div>
-            <CardFooter items={item}> {item.footer} </CardFooter>
+            <CardFooter items={items}> {item.footer} </CardFooter>
           </CardItem>
         </Link>
       ))}
