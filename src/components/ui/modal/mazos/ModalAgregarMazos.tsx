@@ -34,7 +34,7 @@ export const ModalAgregarMazos = () => {
 
   const { register, handleSubmit, reset } = useForm();
   const crearMazo = useStoreMazos((state) => state.crear);
-  const updateMazos = useStoreMazos((state) => state.obtenerMazos);
+  const updateMazos = useStoreMazos((state) => state.obtenerMazos2);
 
   const onSubmit = async (data: any) => {
     const payload = {
