@@ -1,7 +1,7 @@
 import api from "@/lib/axios";
 import { AxiosError } from "axios";
 
-export const getUserApi = async (id) => {
+export const getUserApi = async (id: string) => {
   try {
     const response = await api.get(`/usuarios/${id}`);
 
