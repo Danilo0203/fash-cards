@@ -48,9 +48,13 @@ export const CardFooter = ({
           </Button>
         ) : (
           <>
-            <ModalEliminarMazo id={items?.id} title={items?.title} />
-            <ModalEditarMazos {...items} />
-            <ModalAgregarTarjeta id={items?.id} />
+            {items?.map((item) => (
+              <div key={item.id}>
+                <ModalEliminarMazo id={item.id} title={item.title} />
+                <ModalEditarMazos {...item} />
+                <ModalAgregarTarjeta id={item.id} />
+              </div>
+            ))}
           </>
         )}
       </div>
