@@ -1,8 +1,10 @@
 import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
-export default async function middleware(req) {
-  const session = await getSession({ req });
+import { NextRequest } from "next/server";
+
+export default async function middleware(req: NextRequest) {
+  const session = await getSession();
   if (!session) {
     return NextResponse.redirect("/auth/login");
   }
