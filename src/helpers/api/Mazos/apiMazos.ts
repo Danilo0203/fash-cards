@@ -35,9 +35,20 @@ export const createMazoApi = async (mazo: any) => {
   }
 };
 
-export const getMazosApi = async (id) => {
+export const getMazosApi = async (id: string) => {
   try {
     const response = await api.get(`/usuarios/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+  }
+};
+
+export const getMazosApi2 = async () => {
+  try {
+    const response = await api.get(`/mazos`);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

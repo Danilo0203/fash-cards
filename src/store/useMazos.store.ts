@@ -3,6 +3,7 @@ import {
   createMazoApi,
   createTipoMazoApi,
   getMazosApi,
+  getMazosApi2,
   getTiposMazosApi,
   updateMazoApi,
 } from "@/helpers/api/Mazos/apiMazos";
@@ -25,6 +26,7 @@ interface MazosStore {
   obtenerTiposMazos: () => Promise<void>;
   crearTipo: (nombre: string) => Promise<void>;
   obtenerMazos: (id: any) => Promise<void>;
+  obtenerMazos2: () => Promise<void>;
   crear: (mazo: any) => Promise<void>;
   editar: (id: any, mazo: any) => Promise<void>;
 }
@@ -78,9 +80,32 @@ export const useStoreMazos = create<MazosStore>()((set, get) => ({
     set({ isLoading: true });
     try {
       const response = await getMazosApi(id);
-      console.log(response);
       set({
         mazos: response.data.mazos.map(
+          ({ id, nombre, descripcion, tarjetas, tipo_mazo }: Props) => ({
+            id,
+            title: nombre,
+            description: descripcion,
+            footer: `${tarjetas.length}`,
+            link: `/admin/mis_mazos/${nombre}`,
+            tipo: tipo_mazo,
+          }),
+        ),
+      });
+    } catch (error) {
+      set({ error });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // Obtener todos los mazos
+  obtenerMazos2: async () => {
+    set({ isLoading: true });
+    try {
+      const response = await getMazosApi2();
+      set({
+        mazos: response.data.map(
           ({ id, nombre, descripcion, tarjetas, tipo_mazo }: Props) => ({
             id,
             title: nombre,
