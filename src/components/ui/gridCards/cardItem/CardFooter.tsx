@@ -4,9 +4,8 @@ import { Button } from "@nextui-org/button";
 import { IconHeart, IconHeartFilled } from "@tabler/icons-react";
 import { usePathname } from "next/navigation";
 import { ModalAgregarTarjeta } from "../../modal/tarjetas/ModalAgregarTarjeta";
-import { ModalEditarTarjeta } from "../../modal/tarjetas/ModalEditarTarjeta";
-import { ModalEliminarTarjeta } from "../../modal/tarjetas/ModalEliminarTarjeta";
-import { ModalEditarMazos } from "../../modal/ModalEditarMazos";
+import { ModalEditarMazos } from "../../modal/mazos/ModalEditarMazos";
+import { ModalEliminarMazo } from "../../modal/mazos/ModalEliminarMazos";
 
 export const CardFooter = ({
   className,
@@ -49,7 +48,7 @@ export const CardFooter = ({
           </Button>
         ) : (
           <>
-            <ModalEliminarTarjeta id={items?.id} />
+            <ModalEliminarMazo id={items?.id} title={items?.title} />
             <ModalEditarMazos {...items} />
             <ModalAgregarTarjeta id={items?.id} />
           </>

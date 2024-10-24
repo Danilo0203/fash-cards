@@ -6,7 +6,7 @@ import React from "react";
 import { Nav } from "../nav/Nav";
 import clsx from "clsx";
 
-import { ModalAgregarMazos } from "../modal/ModalAgregarMazos";
+import { ModalAgregarMazos } from "../modal/mazos/ModalAgregarMazos";
 import { CategoriasMazos } from "../categoriasMazos/CategoriasMazos";
 import { ModalAgregarTipoMazo } from "../modal/ModalAgregarTipoMazo";
 

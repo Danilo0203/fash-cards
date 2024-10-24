@@ -1,5 +1,5 @@
-// ModalAgregarMazos.jsx
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Modal,
@@ -11,50 +11,88 @@ import {
   ModalFooter,
   Textarea,
   useDisclosure,
+  Select,
+  SelectItem,
+  Selection,
 } from "@nextui-org/react";
-import { CategoriasMazos } from "../categoriasMazos/CategoriasMazos";
-import { useStoreMazos } from "@/store/useMazos.store";
 
+import { useStoreMazos } from "@/store/useMazos.store";
 import { toast } from "sonner";
 
 import IconEdit from "@/components/icons/IconEdit";
+import { useSession } from "next-auth/react";
 
 export const ModalEditarMazos = ({
   id,
   title,
   description,
+  tipo,
 }: {
   id?: string;
   title?: string;
   description?: string;
+  tipo?: string;
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<{
-    currentKey: string;
-  } | null>(null);
-
   const { isOpen, onOpen, onClose } = useDisclosure({
     id: "modal-mazo",
   });
 
+  const editarMazoAPI = useStoreMazos((state) => state.editar);
+  const categoriasMazos = useStoreMazos((state) => state.tiposMazos);
+  const obtenerTiposMazos = useStoreMazos((state) => state.obtenerTiposMazos);
+  const updateMazos = useStoreMazos((state) => state.obtenerMazos);
+
+  const [isLoadingCategorias, setIsLoadingCategorias] = useState(true); // Estado específico de carga para categorías
+  const [value, setValue] = useState<Selection>(new Set([tipo || ""]));
+
+  const { data: session, status } = useSession();
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       name: title,
       description: description,
     },
   });
-  const editarMazo = useStoreMazos((state) => state.editar);
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      setIsLoadingCategorias(true);
+      await obtenerTiposMazos();
+      setIsLoadingCategorias(false);
+    };
+
+    fetchCategorias();
+  }, [obtenerTiposMazos]);
+
+  useEffect(() => {
+    if (isOpen && tipo) {
+      setValue(new Set([tipo]));
+      reset({
+        name: title,
+        description: description,
+      }); // Resetear el formulario cuando se abre el modal
+    }
+  }, [isOpen, tipo, title, description, reset]);
 
   const onSubmit = async (data: any) => {
+    const selectedValue = Array.from(value)[0]; // Obtener el valor seleccionado del estado
+    const tipo_mazo_id = categoriasMazos.find(
+      (item) => item.label === selectedValue,
+    )?.value;
+
     const payload = {
       nombre: data.name,
       descripcion: data.description,
-      id,
-      tipo_mazo_id: selectedCategory ? selectedCategory.currentKey : null,
+      tipo_mazo_id: tipo_mazo_id,
     };
-    await editarMazo(payload);
-    toast.success("Mazo creado correctamente");
-    reset();
-    onClose();
+
+    try {
+      await editarMazoAPI(id, payload);
+      toast.success("Mazo editado correctamente");
+      reset(); // Limpiar el formulario
+      onClose(); // Cerrar el modal
+      updateMazos(session?.user?.id); // Actualizar la lista de mazos
+    } catch (error) {
+      toast.error("Hubo un error al editar el mazo");
+    }
   };
 
   return (
@@ -70,6 +108,7 @@ export const ModalEditarMazos = ({
       >
         <IconEdit className="h-4 w-4 text-textElementLight dark:text-cardElementLight" />
       </Button>
+
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -83,12 +122,12 @@ export const ModalEditarMazos = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Crear mazo de estudio
+                Editar mazo de estudio
               </ModalHeader>
               <ModalBody>
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  id="AddMazo"
+                  id="EditarMazo"
                   className="flex flex-col gap-4"
                 >
                   <Input
@@ -99,10 +138,18 @@ export const ModalEditarMazos = ({
                     {...register("name")}
                   />
                   <div className="flex gap-3">
-                    <CategoriasMazos
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                    />
+                    <Select
+                      isLoading={isLoadingCategorias} // Estado de carga para las categorías
+                      label="Categorías de mazos"
+                      className="w-full"
+                      variant="bordered"
+                      selectedKeys={value}
+                      onSelectionChange={setValue}
+                    >
+                      {categoriasMazos.map((item) => (
+                        <SelectItem key={item.label}>{item.label}</SelectItem>
+                      ))}
+                    </Select>
                   </div>
                   <Textarea
                     label="Descripción"
@@ -128,12 +175,12 @@ export const ModalEditarMazos = ({
                 <Button
                   color="secondary"
                   type="submit"
-                  form="AddMazo"
+                  form="EditarMazo"
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
                 >
-                  Agregar
+                  Editar
                 </Button>
               </ModalFooter>
             </>

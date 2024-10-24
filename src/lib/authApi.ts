@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const authApi = axios.create({
-  baseURL: "http://127.0.0.1/api-tarjetas-didacticas/public/api",
+  baseURL: process.env.NEXT_PUBLIC_HOST_URL,
   withCredentials: true,
 });
 

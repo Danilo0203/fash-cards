@@ -12,7 +12,7 @@ import {
   Textarea,
   useDisclosure,
 } from "@nextui-org/react";
-import { CategoriasMazos } from "../categoriasMazos/CategoriasMazos";
+import { CategoriasMazos } from "../../categoriasMazos/CategoriasMazos";
 import { useStoreMazos } from "@/store/useMazos.store";
 
 import { toast } from "sonner";
@@ -34,6 +34,7 @@ export const ModalAgregarMazos = () => {
 
   const { register, handleSubmit, reset } = useForm();
   const crearMazo = useStoreMazos((state) => state.crear);
+  const updateMazos = useStoreMazos((state) => state.obtenerMazos);
 
   const onSubmit = async (data: any) => {
     const payload = {
@@ -44,6 +45,7 @@ export const ModalAgregarMazos = () => {
     await crearMazo(payload);
     toast.success("Mazo creado correctamente");
     reset();
+    updateMazos();
     closeMazoModal();
   };
 

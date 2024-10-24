@@ -6,11 +6,20 @@ import {
 } from "@/helpers/api/Tarjetas/apiTarjeta";
 import { create } from "zustand";
 
+interface Props {
+  id: string;
+  pregunta: string;
+  respuesta: string;
+  mazo: {
+    nombre: string;
+  };
+}
+
 interface TarjetasStore {
   tarjetas: any[];
   isLoading: boolean;
   error: any;
-  obtenerTarjetas: (mazoId: number) => Promise<void>;
+  obtenerTarjetas: () => Promise<void>;
   crearTarjeta: (tarjeta: any) => Promise<void>;
   actualizarTarjeta: (id: number, tarjeta: any) => Promise<void>;
   eliminarTarjeta: (id: number) => Promise<void>;
@@ -22,16 +31,19 @@ export const useStoreTarjetas = create<TarjetasStore>()((set, get) => ({
   error: undefined,
 
   // Obtener todas las tarjetas de un mazo
-  obtenerTarjetas: async (mazoId: number) => {
+  obtenerTarjetas: async () => {
     set({ isLoading: true });
     try {
-      const response = await getTarjetasApi(mazoId);
+      const response = await getTarjetasApi();
       set({
-        tarjetas: response.data.map(({ id, pregunta, respuesta }) => ({
-          id,
-          question: pregunta,
-          answer: respuesta,
-        })),
+        tarjetas: response.data.map(
+          ({ id, pregunta, respuesta, mazo }: Props) => ({
+            id,
+            question: pregunta,
+            answer: respuesta,
+            mazo: mazo.nombre,
+          }),
+        ),
       });
     } catch (error) {
       set({ error });

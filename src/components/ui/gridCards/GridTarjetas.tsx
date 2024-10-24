@@ -6,18 +6,17 @@ import { CardItem } from "./cardItem/CardItem";
 import { CardTitle } from "./cardItem/CardTitle";
 import { CardDescription } from "./cardItem/CardDescription";
 import Link from "next/link";
-import { CardFooter } from "./cardItem/CardFooter";
+// import { CardFooter } from "./cardItem/CardFooter";
 
-export const Grid = ({
+export const GridTarjetas = ({
   items,
   className,
 }: {
   items: {
-    title: string;
-    description: string;
-    footer: string;
-    link: string;
+    answer: string;
+    question: string;
     id: string;
+    link: string;
   }[];
   className?: string;
 }) => {
@@ -60,10 +59,18 @@ export const Grid = ({
           </AnimatePresence>
           <CardItem>
             <div className="flex flex-col gap-y-2">
-              <CardTitle>{item.title}</CardTitle>
-              <CardDescription>{item.description}</CardDescription>
+              <CardTitle>{item.answer}</CardTitle>
+              <CardDescription>{item.question}</CardDescription>
             </div>
-            <CardFooter items={item}> {item.footer} </CardFooter>
+            {/* <CardFooter
+              items={{
+                id: item.id,
+                title: item.answer,
+                description: item.question,
+              }}
+            >
+              {item.footer}
+            </CardFooter> */}
           </CardItem>
         </Link>
       ))}

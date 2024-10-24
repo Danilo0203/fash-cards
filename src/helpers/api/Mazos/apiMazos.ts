@@ -19,9 +19,6 @@ export const createTipoMazoApi = async (tipoMazo: any) => {
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      toast.error(
-        `${error.response?.data.message || "Error al crear el tipo de mazo"}`,
-      );
       return error.response?.data;
     }
   }
@@ -33,17 +30,14 @@ export const createMazoApi = async (mazo: any) => {
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      toast.error(
-        `${error.response?.data.message || "Error al crear el mazo"}`,
-      );
       return error.response?.data;
     }
   }
 };
 
-export const getMazosApi = async () => {
+export const getMazosApi = async (id) => {
   try {
-    const response = await api.get("/mazos");
+    const response = await api.get(`/usuarios/${id}`);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -59,10 +53,21 @@ export const updateMazoApi = async (id: number, mazo: any) => {
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      toast.error(
-        `${error.response?.data.message || "Error al actualizar el mazo"}`,
-      );
       return error.response?.data;
     }
+  }
+};
+
+// Eliminar mazo
+export const deleteMazoApi = async (id: string) => {
+  try {
+    const response = await api.delete(`/mazos/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      toast.error(error.response?.data.message);
+      return error.response?.data;
+    }
+    toast.error("Error inesperado al eliminar el mazo");
   }
 };

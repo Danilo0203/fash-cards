@@ -1,5 +1,5 @@
-// CategoriasMazos.jsx
-import { useEffect } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { Select, Selection, SelectItem } from "@nextui-org/react";
 import { useStoreMazos } from "@/store/useMazos.store";
 
@@ -12,12 +12,18 @@ export const CategoriasMazos = ({
   selectedCategory,
   setSelectedCategory,
 }: CategoriasMazosProps) => {
+  const [isLoading, setIsLoading] = useState(true); // Estado de carga específico del componente
   const categoriasMazos = useStoreMazos((state) => state.tiposMazos);
   const obtenerTiposMazos = useStoreMazos((state) => state.obtenerTiposMazos);
-  const isLoading = useStoreMazos((state) => state.isLoading);
 
   useEffect(() => {
-    obtenerTiposMazos();
+    const fetchTiposMazos = async () => {
+      setIsLoading(true); // Iniciar el estado de carga
+      await obtenerTiposMazos(); // Esperar a que las categorías se obtengan
+      setIsLoading(false); // Terminar el estado de carga
+    };
+
+    fetchTiposMazos(); // Ejecutar la función al montar el componente
   }, [obtenerTiposMazos]);
 
   const handleSelectionChange = (key: Selection) => {
@@ -29,15 +35,22 @@ export const CategoriasMazos = ({
 
   return (
     <Select
-      items={categoriasMazos}
-      isLoading={isLoading}
+      isLoading={isLoading} // Mostrar estado de carga mientras obtenemos los datos
       label="Categorías de mazos"
       className="w-full"
       variant="bordered"
       selectedKeys={selectedCategory ? selectedCategory.currentKey : undefined}
       onSelectionChange={handleSelectionChange}
     >
-      {(items) => <SelectItem key={items.value}>{items.label}</SelectItem>}
+      {!isLoading && categoriasMazos.length > 0 ? (
+        categoriasMazos.map((item) => (
+          <SelectItem key={item.value}>{item.label}</SelectItem>
+        ))
+      ) : (
+        <SelectItem key="empty">
+          {isLoading ? "Cargando..." : "No hay categorías disponibles"}
+        </SelectItem>
+      )}
     </Select>
   );
 };

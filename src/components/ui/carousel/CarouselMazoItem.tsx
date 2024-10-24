@@ -1,22 +1,11 @@
 import EmblaCarousel from "./EmblaCarousel";
 import { EmblaOptionsType } from "embla-carousel";
-export const CarouselMazoItem = () => {
-  const OPTIONS: EmblaOptionsType = {};
+interface CarouselMazoItemProps {
+  tarjetas: any[]; // Replace 'any[]' with the appropriate type if known
+}
 
-  const tarjetas = [
-    {
-      pregunta: "¿Qué es un mazo?",
-      respuesta: "Una tarjeta es un conjunto de preguntas y respuestas",
-    },
-    {
-      pregunta: "¿Qué es una tarjeta?",
-      respuesta: "Una tarjeta es un conjunto de preguntas y respuestas",
-    },
-    {
-      pregunta: "¿Qué es un mazo?",
-      respuesta: "Un mazo es un conjunto de tarjetas",
-    },
-  ];
+export const CarouselMazoItem = ({ tarjetas }: CarouselMazoItemProps) => {
+  const OPTIONS: EmblaOptionsType = {};
 
   return (
     <>

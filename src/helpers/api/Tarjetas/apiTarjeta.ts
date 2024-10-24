@@ -3,9 +3,9 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 
 // Obtener todas las tarjetas de un mazo
-export const getTarjetasApi = async (mazoId: number) => {
+export const getTarjetasApi = async () => {
   try {
-    const response = await api.get(`/tarjetas/${mazoId}`);
+    const response = await api.get(`/tarjetas`);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
