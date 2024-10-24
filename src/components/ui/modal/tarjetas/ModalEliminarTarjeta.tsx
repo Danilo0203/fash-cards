@@ -32,7 +32,7 @@ export const ModalEliminarTarjeta = ({ id }: { id?: string }) => {
   });
   const { register, handleSubmit, reset } = useForm<Props>();
   const crearTarjeta = useStoreTarjetas((state) => state.crearTarjeta);
-  const updateMazos = useStoreMazos((state) => state.obtenerMazos);
+  const updateMazos = useStoreMazos((state) => state.obtenerMazos2);
   const onSubmit = async ({ pregunta, respuesta }: Props) => {
     await crearTarjeta({
       pregunta,
