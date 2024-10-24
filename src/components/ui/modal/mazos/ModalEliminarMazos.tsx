@@ -27,7 +27,7 @@ export const ModalEliminarMazo = ({
 
   const updateMazos = useStoreMazos((state) => state.obtenerMazos); // Actualizar lista después de eliminar
   // const isLoading = useStoreMazos((state) => state.isLoading);
-  const { data: session, status } = useSession(); // Añadimos el estado de la sesión
+  const { data: session } = useSession(); // Añadimos el estado de la sesión
 
   const handleDelete = async () => {
     try {
@@ -38,7 +38,7 @@ export const ModalEliminarMazo = ({
       toast.success("Mazo eliminado correctamente.");
       onClose(); // Cerrar el modal
       updateMazos(session?.user?.id); // Actualizar la lista de mazos
-    } catch (error) {
+    } catch {
       toast.error("Error inesperado al eliminar el mazo.");
     }
   };

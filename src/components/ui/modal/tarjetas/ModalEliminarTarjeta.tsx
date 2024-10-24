@@ -13,7 +13,7 @@ import {
   Input,
   ModalFooter,
 } from "@nextui-org/react";
-import { IconPlus } from "@tabler/icons-react";
+
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 

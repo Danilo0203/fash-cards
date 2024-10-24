@@ -1,8 +1,6 @@
 "use client";
-import { GridCards } from "@/components/ui/gridCards/GridCards";
 import { GridTarjetas } from "@/components/ui/gridCards/GridTarjetas";
 import { HeaderIDMazo } from "@/components/ui/header/HeaderIDMazo";
-import { useStoreMazos } from "@/store/useMazos.store";
 import { useStoreTarjetas } from "@/store/useTarjeta.store";
 import { useEffect } from "react";
 

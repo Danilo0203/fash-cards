@@ -1,6 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { Input, Button } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getUserApi } from "@/helpers/api/user/userApi";
@@ -36,7 +36,11 @@ export const FormPerfil = () => {
     }
   }, [status, setValue]);
 
-  const formPerfil: { label: string; placeholder: string; name: string }[] = [
+  const formPerfil: {
+    label: string;
+    placeholder: string;
+    name: "nombres" | "email";
+  }[] = [
     {
       label: "Nombre",
       placeholder: "Escribe tu nombre",

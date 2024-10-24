@@ -45,7 +45,7 @@ export const ModalEditarMazos = ({
   const [isLoadingCategorias, setIsLoadingCategorias] = useState(true); // Estado específico de carga para categorías
   const [value, setValue] = useState<Selection>(new Set([tipo || ""]));
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       name: title,
@@ -90,7 +90,7 @@ export const ModalEditarMazos = ({
       reset(); // Limpiar el formulario
       onClose(); // Cerrar el modal
       updateMazos(session?.user?.id); // Actualizar la lista de mazos
-    } catch (error) {
+    } catch {
       toast.error("Hubo un error al editar el mazo");
     }
   };

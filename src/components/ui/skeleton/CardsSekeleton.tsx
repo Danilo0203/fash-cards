@@ -1,9 +1,7 @@
-import { CardFooter, cn, Link } from "@nextui-org/react";
+import { cn } from "@nextui-org/react";
 import { Skeleton } from "@nextui-org/skeleton";
-import { CardDescription } from "../gridCards/cardItem/CardDescription";
+
 import { CardItem } from "../gridCards/cardItem/CardItem";
-import { CardTitle } from "../gridCards/cardItem/CardTitle";
-import { AnimatePresence, motion } from "framer-motion";
 
 export const CardsSekeleton = () => {
   return (
