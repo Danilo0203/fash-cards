@@ -20,7 +20,7 @@ export const CardFooter = ({
     id: string;
     title: string;
     description: string;
-  }[];
+  };
 }) => {
   const pathname = usePathname();
 
@@ -28,6 +28,8 @@ export const CardFooter = ({
     e.preventDefault();
     e.stopPropagation();
   };
+
+  console.log(items);
 
   return (
     <div
@@ -48,13 +50,12 @@ export const CardFooter = ({
           </Button>
         ) : (
           <>
-            {items?.map((item) => (
-              <div key={item.id}>
-                <ModalEliminarMazo id={item.id} title={item.title} />
-                <ModalEditarMazos {...item} />
-                <ModalAgregarTarjeta id={item.id} />
-              </div>
-            ))}
+            <ModalEliminarMazo
+              id={items?.id ?? ""}
+              title={items?.title ?? ""}
+            />
+            <ModalEditarMazos description={items?.description} />
+            <ModalAgregarTarjeta id={items?.id} />
           </>
         )}
       </div>
