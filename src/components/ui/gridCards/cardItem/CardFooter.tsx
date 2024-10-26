@@ -54,7 +54,11 @@ export const CardFooter = ({
               id={items?.id ?? ""}
               title={items?.title ?? ""}
             />
-            <ModalEditarMazos description={items?.description} />
+            <ModalEditarMazos
+              description={items?.description}
+              id={items?.id}
+              title={items?.title}
+            />
             <ModalAgregarTarjeta id={items?.id} />
           </>
         )}
