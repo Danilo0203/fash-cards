@@ -21,7 +21,17 @@ import { signOut, useSession } from "next-auth/react";
 export function MenuSidebar({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const links = [
+  const linksPublic = [
+    {
+      label: "Explorar",
+      href: "/explorar",
+      icon: (
+        <IconCompassFilled className="size-8 flex-shrink-0 text-primary-foreground dark:text-neutral-200" />
+      ),
+    },
+  ];
+
+  const linksPrivate = [
     {
       label: "Inicio",
       href: "/admin",
@@ -51,8 +61,11 @@ export function MenuSidebar({
       ),
     },
   ];
+
   const [open, setOpen] = useState(false);
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+
+  const validationLinks = !session ? linksPublic : linksPrivate;
 
   return (
     <div
@@ -66,7 +79,7 @@ export function MenuSidebar({
           <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => (
+              {validationLinks.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
               {status === "authenticated" ? (
